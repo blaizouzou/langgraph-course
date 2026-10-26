@@ -20,7 +20,7 @@ def reflect_node(state:MessageGraph):
     res = reflect_chain.invoke({"messages":state['messages']})
     #On prend la réponse du LLM et on le cast dans une réponse Humaine pour faire croire au LLM qu'il sagit d'une remarque d'USER
     #Les LLM sont surtout entrainé pour êtres conversationnels donc on utilise cette technique pour avoir de meilleurs résultats
-    return {"messages": HumanMessage(content=res.content)}
+    return {"messages": [HumanMessage(content=res.content)]}
 
 builder = StateGraph(state_schema=MessageGraph)
 builder.add_node(GENERATE, generation_node)
@@ -42,11 +42,11 @@ builder.add_conditional_edges(GENERATE, should_continue, path_map={END:END, REFL
 builder.add_edge(REFLECT, GENERATE)
 
 graph = builder.compile()
-print(graph.get_graph().draw_mermaid())
-# print(graph.get_graph().print_ascii())
+# print(graph.get_graph().draw_mermaid())
+print(graph.get_graph().print_ascii())
 
 if __name__ == '__main__':
     print('hello')
-    input = HumanMessage(content="Make a great random tweet better using humor on japanese stereotype")
-    response = graph.invoke(input)
-    print(response)
+    input = {"message":HumanMessage(content="Make a great random tweet better using humor on japanese stereotype")}
+    # response = graph.invoke(input)
+    # print(response)
