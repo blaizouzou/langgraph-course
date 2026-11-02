@@ -46,4 +46,4 @@ res = graph.invoke({"messages":HumanMessage(content="Write about AI-Powered SOC 
 last_message = res['messages'][-1]
 if (isinstance(last_message, AIMessage) and last_message.tool_calls):
     print(last_message.tool_calls[0]["args"]["answer"])
-print(res)
+# print(res)
